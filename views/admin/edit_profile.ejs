@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%  include ../partials/header.ejs %>
+
+<body >
+        <!-- Preloader -->
+        
+          <div class="preloader">
+                <div class="cssload-speeding-wheel"></div>
+          </div>
+        <div id="wrapper">
+
+
+<%  include ../partials/navbar.ejs %>           
+
+<%  include ../partials/sidebar.ejs %>  
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+            <div class="row">
+            <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                      <h4 class="page-title">Edit Profile </h4>
+                    </div>
+                    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+                      
+                      <ol class="breadcrumb">
+                        <li><a href="dashboard">Dashboard</a></li>
+                        <li class="active">Edit Profile </li>
+                      </ol>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                  </div>
+                  <% if( messages!= '' ){ %>
+                    <div class="alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                      <strong>Success!</strong> <%= messages %>
+                    </div>
+                    <% }%>
+                    <% if( message!= '' ){ %>
+                      <div class="alert alert-danger">
+                          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Error!</strong> <%= message %>
+                      </div>
+                      <% }%>
+            <div class="col-md-4 col-lg-4 col-xs-12">
+
+            <div class="white-box">
+                <% std.forEach(function(item) { %>
+<div class="user-bg"> <img src="<%=baseURL%>public/asset/plugins/images/large/img1.jpg" alt="user" >
+    <div class="overlay-box">
+      <div class="user-content"> <a href="javascript:void(0)"><img alt="User Pic" class="thumb-lg img-circle" src="<%=baseURL%>images/upload_images/<%= item.profile_image %>"  ></a>
+        <h4 class="text-white"> <%= item.name %></h4>
+        <h5 class="text-white"><%= item.email %></h5>
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+  </div>
+
+  <div class="col-md-8 col-lg-8 col-xs-12">
+        <div class="col-md-12">     <!--form  1290 enctype="multipart/form-data"-->
+          <div class="panel panel-info">
+            
+            <div class="panel-wrapper collapse in" aria-expanded="true">
+              <div class="panel-body">
+                  <form class="form-horizontal form-bordered"  method="POST" action="<%= siteURL %>update_profile" enctype="multipart/form-data" >
+                    <input type="hidden" name="id" value="<%= item.id %>" />
+                      
+                      <div class="form-group">
+                        <label class="control-label col-md-3"> Name</label>
+                        <div class="col-md-9">
+                            
+                          <input type="text"  class="form-control" name="name" id="name" value="<%= item.name %>"  required/>
+                           </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3">Email</label>
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" name="email" id="email"  value="<%= item.email %>"  required/>
+                          
+                          </div>
+                      </div>
+                      
+                     
+                      <div class="form-group">
+                        <label class="control-label col-sm-3">Profile Image</label>
+                        <div class="col-sm-9">
+                          <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                            <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                            <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
+                            <input type="file" name="myFile" id="image" onchange="checkextension()" accept="image/*" />
+                            <input type="hidden" value="<%= item.profile_image %>"   name="old_myFile">
+                            </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a> </div>
+                        </div>
+                      </div>
+                    
+                      <% });%> 
+                   
+                    <div class="form-actions">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                              <button type="submit" class="btn btn-success" id="submit> <i class="fa fa-check"></i> Submit</button>
+                            <!--  <input type="button" name="cancel" value="Cancel" class="cancel" onClick="cancelAdd()">-->
+                              <button type="button" class="btn btn-default" onClick="cancelAdd()">Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <footer class="footer text-center"> 2019 &copy; restaurant menu</footer>
+  </div>
+  <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+
+<%  include ../partials/footer.ejs  %> 
+<script>
+function checkextension() {
+
+  var file = document.querySelector("#image");
+  if ( /\.(jpe?g|png|gif)$/i.test(file.files[0].name) === false ) { alert("Photo only allows file types of  PNG, JPG, JPEG !"); }
+
+}
+</script>
+<script>
+  function cancelAdd(){
+      
+      window.location.href = '<%= siteURL %>dashboard';
+  }</script>
+</body>
+</html>

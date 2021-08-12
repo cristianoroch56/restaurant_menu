@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%  include ../partials/header.ejs %>
+
+<body >
+        <!-- Preloader -->
+        
+          <div class="preloader">
+                <div class="cssload-speeding-wheel"></div>
+          </div>
+        <div id="wrapper">
+
+
+<%  include ../partials/navbar.ejs %>           
+
+<%  include ../partials/sidebar.ejs %>    
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+              <h4 class="page-title">Add Items</h4>
+            </div>
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+              <ol class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+                
+                <li class="active">Add Items</li>
+              </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <% if( message!= '' ){ %>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Error!</strong> <%= message %>
+            </div>
+            <% }%>
+          <div class="row">
+              <div class="col-md-12">     <!--form  1290-->
+                <div class="panel panel-info">
+                
+                  <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                       
+                        <form class="form-horizontal form-bordered" data-toggle="validator" action="<%= siteURL %>post_items" method="POST" enctype="multipart/form-data">
+                          <div class="form-body">
+                             
+                                  <div class="form-group">
+                                    <label class="control-label col-md-2">Category</label>
+                                    <div class="col-md-6">
+                                    <select class="form-control" name="category_id" data-placeholder="Choose a Category" tabindex="1" required>
+                                      
+                                      <%for(i=0; i<jsn.length; i++){%>
+                                        <option value="<%= jsn[i].id%>"><%= jsn[i].category_name %></option>
+                                      <%}%>
+                                  
+                                    </select>
+                                  </div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <label class="control-label col-md-2">Item Name</label>
+                                      <div class="col-md-6">
+                                        <input type="text"  class="form-control" name="item_name" id="item_name"  required>
+                                         </div>
+                                    </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Item Details</label>
+                                <div class="col-md-6">
+                                  <textarea class="form-control" name="item_detail" rows="5" ></textarea>
+                                </div>
+                              </div>
+                            <div class="form-group">
+                              <label class="control-label col-sm-2">Main Image </label>
+                              <div class="col-sm-6">
+                                <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                  <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                  <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
+                                  <input type="file" name="myFile" id="image" accept="image/*" required/>
+                                  </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a> </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Multiple Image </label>
+                                <div class="col-sm-6">
+                                  <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                    <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                    <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Select file</span> <span class="fileinput-exists">Change</span>
+                                    <input type="file" name="myFiles" accept="image/*"  multiple required/>
+                                    </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a> </div>
+                                </div>
+                              </div>
+                            
+                          </div>
+                          <div class="form-actions">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="row">
+                                  <div class="col-md-offset-3 col-md-9">
+                                    <button type="submit" class="btn btn-success" id="submit> <i class="fa fa-check"></i> Submit</button>
+                                    <button type="button" class="btn btn-default" onClick="cancelAdd()">Cancel</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        
+<footer class="footer text-center"> 2019 &copy; restaurant menu </footer>
+</div>
+<!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<%  include ../partials/footer.ejs  %> 
+<script src="<%=baseURL%>public/asset/js/validator.js"></script>
+<script>
+  function cancelAdd(){
+      
+      window.location.href = '<%= siteURL %>food_items';
+  }</script>
+</body>
+</html>

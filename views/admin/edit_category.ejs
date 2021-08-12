@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%  include ../partials/header.ejs %>
+
+<body >
+        <!-- Preloader -->
+        
+          <div class="preloader">
+                <div class="cssload-speeding-wheel"></div>
+          </div>
+        <div id="wrapper">
+
+
+<%  include ../partials/navbar.ejs %>           
+
+<%  include ../partials/sidebar.ejs %>    
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+              <h4 class="page-title">Edit Category</h4>
+            </div>
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+              <ol class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+               
+                <li class="active">Edit Category</li>
+              </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <% if( message!= '' ){ %>
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Error!</strong> <%= message %>
+            </div>
+            <% }%>
+          <div class="row">
+              <div class="col-md-12">     <!--form  1290-->
+                <div class="panel panel-info">
+                 
+                  <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <form class="form-horizontal form-bordered" data-toggle="validator"  method="POST" action="<%= siteURL %>submit_category/<%= jsn.id %>" enctype="multipart/form-data">
+                          <div class="form-body">
+                            <div class="form-group">
+                              <label class="control-label col-md-2">Category Name</label>
+                              <div class="col-md-10">
+                                <input type="hidden" name="id" value="<%= jsn.id %>">
+                                <input type="text"  class="form-control" name="category_name" id="name" value="<%= jsn.category_name %>" required>
+                                 </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-md-2">Category Details</label>
+                                <div class="col-md-10">
+                                  <textarea class="form-control" name="category_detail"  rows="5" ><%= jsn.category_detail %></textarea>
+                                </div>
+                              </div>
+                              
+
+
+                            <div class="form-group">
+                              <label class="control-label col-sm-2">Image upload</label>
+                              <div class="col-sm-4">
+                                
+                                  <!--<input type="file" name="myFile"  id="image"/>-->
+                                  <input data-show-remove="false" type="file" id="myFile"  name="myFile" accept="image/*" onchange="return ValidateFileUpload()"
+                      class="dropify" data-default-file="<%=baseURL%>images/category_images/<%= jsn.category_image %>" />
+                                  <input  type="hidden" value="<%= jsn.category_image %>" name="old_myFile" >
+                                  
+                              </div>
+                            </div>
+                            
+                          </div>
+                          <div class="form-actions">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="row">
+                                  <div class="col-md-offset-3 col-md-9">
+                                    <button type="submit" class="btn btn-success" id="submit> <i class="fa fa-check"></i> Submit</button>
+                                    <button type="button" class="btn btn-default" onClick="cancelAdd()">Cancel</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        
+<footer class="footer text-center"> 2019 &copy; restaurant menu </footer>
+</div>
+<!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<%  include ../partials/footer.ejs  %> 
+<script src="<%=baseURL%>public/asset/js/validator.js"></script>
+<script>
+  
+$('.dropify').dropify({
+         
+      
+});
+</script>
+<SCRIPT type="text/javascript">
+  function ValidateFileUpload() {
+      var fuData = document.getElementById('myFile');
+      var FileUploadPath = fuData.value;
+
+//To check if user upload any file
+      if (FileUploadPath == '') {
+          alert("Please upload an image");
+
+      } else {
+          var Extension = FileUploadPath.substring(
+                  FileUploadPath.lastIndexOf('.') + 1).toLowerCase();
+
+//The file uploaded is an image
+
+if (Extension == "png" || Extension == "bmp"
+                  || Extension == "jpeg" || Extension == "jpg") {
+
+// To Display
+          
+
+          } 
+
+//The file upload is NOT an image
+else {
+              alert("Photo only allows file types of GIF, PNG, JPG, JPEG and BMP. ");
+
+          }
+      }
+  }
+</SCRIPT>
+<script>
+  function cancelAdd(){
+      
+      window.location.href = '<%= siteURL %>food_category';
+  }</script>
+</body>
+</html>

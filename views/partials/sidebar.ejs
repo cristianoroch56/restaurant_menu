@@ -1,0 +1,47 @@
+  <!-- Left navbar-header -->
+  <div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+       <div class="user-profile">
+        <div class="dropdown user-pro-body">  
+          <% std.forEach(function(item) { %>
+            <!--   <div><img src="http://localhost:3000/images/upload_imgs/<%= item.image %>" alt="user-img" class="img-circle"></div> -->
+               <div><img src="<%=baseURL%>images/upload_images/<%= item.profile_image %>" alt="user-img" class="img-circle"></div>
+      
+          <a href="#" class="dropdown-toggle u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= item.name %><span class="caret"></span></a>
+              <ul class="dropdown-menu animated flipInY">
+                <li><a href="<%= siteURL %>edit_profile"><i class="ti-user"></i> My Profile</a></li>
+               
+                <li><a href="<%= siteURL %>change_password"><i class="ti-key"></i> change Password</a></li>
+                
+                
+                <li role="separator" class="divider"></li>
+                <li><a href="<%= siteURL %>logout"><i class="fa fa-power-off"></i> Logout</a></li>
+              </ul>
+              <% });%>     
+        </div>
+      </div>
+      <ul class="nav" id="side-menu">
+        <li class="sidebar-search hidden-sm hidden-md hidden-lg">
+          <!-- input-group -->
+          <div class="input-group custom-search-form">
+            <input type="text" class="form-control" placeholder="Search...">
+            <span class="input-group-btn">
+            <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
+            </span> </div>
+          <!-- /input-group -->
+        </li>
+        
+        
+        <li> <a href="<%= siteURL %>dashboard" ><i class="icon-home fa-fw" data-icon="v"></i> <span class="hide-menu"> Dashboard  <span class="label label-rouded label-custom pull-right"></span></span></a>
+          
+        
+        </li>
+        <li><a href="<%= siteURL %>food_category" ><i class="fa fa-navicon" data-icon="v" ></i> <span class="hide-menu"> Food Category  <span class="label label-rouded label-custom pull-right"></span></span></a>
+       
+        </li>
+        <li><a href="<%= siteURL %>food_items"  ><i class="fa fa-cutlery" data-icon="v"></i> <span class="hide-menu"> Food Items  <span class="label label-rouded label-custom pull-right"></span></span></a>
+       
+        </li>
+      </ul>
+    </div>
+  </div>

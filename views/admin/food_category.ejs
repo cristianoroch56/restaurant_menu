@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%  include ../partials/header.ejs %>
+
+<body >
+        <!-- Preloader -->
+        
+          <div class="preloader">
+                <div class="cssload-speeding-wheel"></div>
+          </div>
+        <div id="wrapper">
+
+
+<%  include ../partials/navbar.ejs %>           
+
+<%  include ../partials/sidebar.ejs %>    
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row bg-title">
+            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+              <h4 class="page-title">Food Category</h4>
+            </div>
+            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+             
+              <ol class="breadcrumb">
+                <li><a href="#">Dashboard</a></li>
+               
+                <li class="active">Food Category</li>
+              </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <% if( messages!= '' ){ %>
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Success!</strong> <%= messages %>
+            </div>
+            <% }%>
+            <% if( message!= '' ){ %>
+              <div class="alert alert-danger">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong> <%= message %>
+              </div>
+              <% }%>
+
+          <!-- /row -->
+          <div class="row">       
+            <div class="col-sm-12">      <!--data table-->   <!--908-->
+              <div class="white-box">
+                  <div class="col-lg-12 col-sm-12 col-xs-12">
+                      <a href="<%= siteURL %>add_category" class="pull-right" ><button class="btn btn-primary" ><i class="fa fa-plus"> </i> New Category</button></a> 
+                    </div>
+                    <br></br>
+                    <br></br>
+                <!--<p class="text-muted m-b-30">Data table example</p>-->
+                <div class="table-responsive">
+                <table id="myTable" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th width="145px" >Category Image</th>
+                      <th width="150px">Category Name</th>
+                      <th >Category Details</th>
+                      <th>Status</th>
+              
+                     <th width="100px">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>   <!--601-->
+                    <% jsn.forEach(function(item) { %>
+                      <tr>
+                        <td><a href="<%=baseURL%>images/category_images/<%= item.category_image %>" data-toggle="lightbox" data-gallery="multiimages" data-title="All Category are here"><img alt="User Pic" src="<%=baseURL%>images/category_images/<%= item.category_image %>" height="42" width="42" ></a> </td>
+                          <td><%= item.category_name %></td>
+                          <td><%= item.category_detail %></td>
+                          <td>
+                              <% if( item.status == enable ){%>
+                                <input type="hidden" name="status" value="<%= item.status %>" />
+                                  <a href="#" type="button" class="btn btn-success btn-rounded" name="status" value="<%= item.status %>" id="status_button" onclick="change_status_confirm(this);"  data-href="status_change?id=<%= item.id %>&status=Disabled" >
+                                    <%= enable %>
+                                 </a>
+                              <% }else{ %>
+                                <a href="#" type="button" class="btn btn-danger btn-rounded" name="status" value="<%= item.status %>" id="status_button" onclick="change_status_confirm(this);" data-href="status_change?id=<%= item.id %>&status=Enabled" >
+                                  <%= disable %>
+                                </a>
+                              <% } %>
+                              
+                            </td>
+                         
+                        <td> 
+                       <a href="<%= siteURL %>edit_category/<%= item.id %>"><button type="button" class="btn btn-warning btn-circle"><i class="fa fa-pencil"></i></button></a> 
+                     
+                       
+                       <a href="#" type="button" class="btn btn-danger btn-circle" onclick="delete_category(this);" data-href="delete_category?id=<%= item.id %>">
+                      <i class="fa fa-times"></i></a>
+                      
+                  
+                       </td>
+                      </tr>
+                      <% });%>        
+                  </tbody>
+                </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.row -->
+          <!-- .right-sidebar -->
+          <!-- /.right-sidebar -->
+  
+<footer class="footer text-center"> 2019 &copy; restaurant menu </footer>
+</div>
+<!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<%  include ../partials/footer.ejs  %> 
+
+
+<!-- start - This is for export functionality only -->
+<!-- end - This is for export functionality only -->
+
+
+<script type="text/javascript" src="<%=baseURL%>public/asset/plugins/bower_components/gallery/js/animated-masonry-gallery.js"></script>
+<script type="text/javascript" src="<%=baseURL%>public/asset/plugins/bower_components/gallery/js/jquery.isotope.min.js"></script>
+<script type="text/javascript" src="<%=baseURL%>public/asset/plugins/bower_components/fancybox/ekko-lightbox.min.js"></script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function ($) {
+      // delegate calls to data-toggle="lightbox"
+      $(document).delegate('*[data-toggle="lightbox"]:not([data-gallery="navigateTo"])', 'click', function(event) {
+          event.preventDefault();
+          return $(this).ekkoLightbox({
+              onShown: function() {
+                  if (window.console) {
+                      return console.log('Checking our the events huh?');
+                  }
+              },
+  onNavigate: function(direction, itemIndex) {
+                  if (window.console) {
+                      return console.log('Navigating '+direction+'. Current item: '+itemIndex);
+                  }
+  }
+          });
+      });
+
+      //Programatically call
+      $('#open-image').click(function (e) {
+          e.preventDefault();
+          $(this).ekkoLightbox();
+      });
+      $('#open-youtube').click(function (e) {
+          e.preventDefault();
+          $(this).ekkoLightbox();
+      });
+
+// navigateTo
+      $(document).delegate('*[data-gallery="navigateTo"]', 'click', function(event) {
+          event.preventDefault();
+
+          var lb;
+          return $(this).ekkoLightbox({
+              onShown: function() {
+
+                  lb = this;
+
+    $(lb.modal_content).on('click', '.modal-footer a', function(e) {
+
+      e.preventDefault();
+      lb.navigateTo(2);
+
+    });
+
+              }
+          });
+      });
+
+
+  });
+</script>
+
+
+<script>
+    $(document).ready(function(){
+      $('#myTable').DataTable();
+      $(document).ready(function() {
+        var table = $('#example').DataTable({
+          "columnDefs": [
+          { "visible": false, "targets": 2 }
+          ],
+          "order": [[ 2, 'asc' ]],
+          "displayLength": 25,
+          "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+  
+            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+              if ( last !== group ) {
+                $(rows).eq( i ).before(
+                  '<tr class="group"><td colspan="5">'+group+'</td></tr>'
+                  );
+  
+                last = group;
+              }
+            } );
+          }
+        } );
+  
+    // Order by the grouping
+    $('#example tbody').on( 'click', 'tr.group', function () {
+      var currentOrder = table.order()[0];
+      if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' ) {
+        table.order( [ 2, 'desc' ] ).draw();
+      }
+      else {
+        table.order( [ 2, 'asc' ] ).draw();
+      }
+    });
+  });
+    });
+    $('#example23').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+  </script>
+  <script>
+
+      function delete_category(e) {
+       
+        swal({
+            title: "Are you sure you want to delete ?",
+            //text: "You want to change status of admin user.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: false
+        }, function () {
+          
+            window.location.href = $(e).attr('data-href');
+        });
+      }
+      </script>
+  ------------------------------------------------Enable-Disable-status-------------------------------------------------->
+  <script>
+  
+  function change_status_confirm(e) {
+  
+    swal({
+        title: "Are you sure you want to change food category status?",
+        //text: "You want to change status of admin user.",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes",
+        closeOnConfirm: false
+    }, function () {
+      
+        window.location.href = $(e).attr('data-href');
+    });
+  }
+  </script>
+ 
+
+
+</body>
+</html>

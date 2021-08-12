@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%  include ../partials/header.ejs %>
+
+<body>
+  <!-- Preloader -->
+
+  <div class="preloader">
+    <div class="cssload-speeding-wheel"></div>
+  </div>
+  <div id="wrapper">
+
+
+    <%  include ../partials/navbar.ejs %>
+
+    <%  include ../partials/sidebar.ejs %>
+
+
+    <div id="page-wrapper">
+      <div class="container-fluid">
+        <div class="row bg-title">
+          <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <h4 class="page-title">Item Images </h4>
+          </div>
+          <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+
+            <ol class="breadcrumb">
+              <li><a href="dashboard">Dashboard</a></li>
+              <li class="active">Item Images</li>
+            </ol>
+          </div>
+          <!-- /.col-lg-12 -->
+        </div>
+        <% if( message!= '' ){ %>
+        <div class="alert alert-danger">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Error!</strong> <%= message %>
+        </div>
+        <% }%>
+        <!-- /.row -->
+
+        <div class="row">
+          <!-- this-->
+          <div class="col-md-12">
+            <div class="white-box">
+              <form class="form-horizontal " data-toggle="validator" action="<%= siteURL %>add_item_images"
+                method="POST" enctype="multipart/form-data">
+                <div class="form-body">
+
+                  <div class="form-group">
+
+                    <div class="col-sm-12">
+                      <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                        <div class="form-control" data-trigger="fileinput"> <i
+                            class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                            class="fileinput-filename"></span></div>
+                        <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">ADD
+                            IMAGES</span> <span class="fileinput-exists">Change</span>
+                          <input type="hidden" name="item_id" value="<%= data_id %>">
+                          <input type="file" name="myFiles" id="image" accept="image/*" multiple required />
+                        </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists"
+                          data-dismiss="fileinput">Remove</a>
+                      </div>
+                      <button type="submit" style="float:right;     width: 115px;" class="btn btn-success"
+                        id="submit> <i class=" fa fa-check"></i> Submit</button>
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- this-->
+          <div class="col-md-12">
+            <div class="white-box">
+              <h3 class="box-title">ITEMS IMAGES</h3>
+
+              <div class="row">
+                <% jsn.forEach(function(item) { %>
+                <div class="col-sm-3 ol-md-3 col-xs-12" id="imgdiv-<%= item.id %>">
+                  <div class="white-box">
+                    <input onchange="file_upload('<%= item.id %>')" type="file" id="fooditem-<%= item.id %>"
+                      accept="image/*" class="dropify"
+                      data-default-file="<%=baseURL%>images/items_images/<%= item.image_name %>" />
+                  </div>
+                </div>
+                <% });%>
+              </div>
+
+
+
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+
+        <footer class="footer text-center"> 2019 &copy;restaurant menu </footer>
+      </div>
+      <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <%  include ../partials/footer.ejs  %>
+
+    <!-- start - This is for export functionality only -->
+    <!-- end - This is for export functionality only -->
+    <script type="text/javascript">
+      //new file upload code
+      function file_upload(img_id) {
+
+        var data = new FormData();
+        data.append('myFile', $('#fooditem-' + img_id)[0].files[0]);
+        data.append('id', img_id);
+        var old_path = $('#fooditem-' + img_id).attr('data-default-file');
+        $.ajax({
+          url: "<%= siteURL %>update_image",
+          type: "POST",
+          dataType: "JSON",
+          processData: false,
+          contentType: false,
+          data: data,
+          success: function (data) {
+            if (data.status) {
+              //alert("true");
+              //code for file successfully uploaded
+            }
+            else {
+              //code for file uploaded error
+
+              $('#fooditem-' + img_id).next('.dropify-clear').click();
+            }
+          }
+        });
+
+
+      }
+
+
+
+      $(document).ready(function () {
+        // Basic
+        $('.dropify').dropify({
+          messages: {
+            default: 'Click to upload new image.',
+
+          }
+        });
+
+        $('.dropify-clear').click(function () {
+          var img_input_id = $(this).prev('input').attr('id');
+            var img_id_arr = img_input_id.split('-');
+            var img_id = img_id_arr[1];
+          swal({
+
+            title: "Are you sure you want to remove item image?",
+            //text: "You want to change status of admin user.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: true
+          }, function (inputValue) {
+            if (inputValue===false) {
+              window.location.reload();
+              return false;
+            }
+            else{
+              //ajax call to delete image
+            $.ajax({
+              url: "<%= siteURL %>delete_image",
+              type: "POST",
+              //dataType: "json",
+              data: { id: img_id },
+              success: function (data) {
+                if (data.status) {
+
+                  //$('#imgdiv-' + img_id).remove();
+                  window.location.reload();
+                }
+                else {
+
+                  return;
+
+                }
+              },
+
+            });   //ajax
+            }
+
+            
+
+          });   //swal
+
+
+        });  //dropify
+
+      });
+
+
+
+
+
+      $(document).ready(function (e) {
+        $("#uploadForm").on('submit', (function (e) {
+          e.preventDefault();
+
+        }));
+      });
+    </script>
+
+
+
+    <script type="text/javascript">
+      $(document).ready(function ($) {
+        // delegate calls to data-toggle="lightbox"
+        $(document).delegate('*[data-toggle="lightbox"]:not([data-gallery="navigateTo"])', 'click', function (event) {
+          event.preventDefault();
+          return $(this).ekkoLightbox({
+            onShown: function () {
+              if (window.console) {
+                return console.log('Checking our the events huh?');
+              }
+            },
+            onNavigate: function (direction, itemIndex) {
+              if (window.console) {
+                return console.log('Navigating ' + direction + '. Current item: ' + itemIndex);
+              }
+            }
+          });
+        });
+
+        //Programatically call
+        $('#open-image').click(function (e) {
+          e.preventDefault();
+          $(this).ekkoLightbox();
+        });
+        $('#open-youtube').click(function (e) {
+          e.preventDefault();
+          $(this).ekkoLightbox();
+        });
+
+        // navigateTo
+        $(document).delegate('*[data-gallery="navigateTo"]', 'click', function (event) {
+          event.preventDefault();
+
+          var lb;
+          return $(this).ekkoLightbox({
+            onShown: function () {
+
+              lb = this;
+
+              $(lb.modal_content).on('click', '.modal-footer a', function (e) {
+
+                e.preventDefault();
+                lb.navigateTo(2);
+
+              });
+
+            }
+          });
+        });
+
+
+      });
+    </script>
+
+    <!-- Magnific popup JavaScript -->
+    <script
+      src="<%=baseURL%>public/asset/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
+    <script
+      src="<%=baseURL%>public/asset/plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup-init.js"></script>
+</body>
+
+</html>

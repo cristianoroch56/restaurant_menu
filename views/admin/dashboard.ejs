@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%  include ../partials/header.ejs %>
+
+<body >
+        <!-- Preloader -->
+        
+          <div class="preloader">
+                <div class="cssload-speeding-wheel"></div>
+          </div>
+        <div id="wrapper">
+
+
+<%  include ../partials/navbar.ejs %>           
+
+<%  include ../partials/sidebar.ejs %>    
+
+
+<div id="page-wrapper">
+        <div class="container-fluid">
+<div class="row bg-title">
+        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+          <h4 class="page-title">Dashboard </h4>
+        </div>
+        <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+         
+          <ol class="breadcrumb">
+            <li><a href="<%= siteURL %>dashboard">Dashboard</a></li>
+
+          </ol>
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+      <% if( messages!= '' ){ %>
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>Success!</strong> <%= messages %>
+        </div>
+        <% }%>
+      <div class="row">
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+          <div class="white-box">
+            <h3 class="box-title">Food CATEGORY</h3>
+            <ul class="list-inline two-part">
+              <li><i class="icon-list text-info"></i></li>
+              <li class="text-right"><span class="counter text-success"><%= rows %></span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-xs-12">
+          <div class="white-box">
+            <h3 class="box-title">Food ITEMS</h3>
+            <ul class="list-inline two-part">
+              <li><i class="ti-view-grid  text-purple"></i></li>
+              <li class="text-right"><span class="counter  text-danger "><%= itemsRows %></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      
+
+ <footer class="footer text-center"> 2019 &copy;restaurant menu </footer>
+  </div>
+  <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+<%  include ../partials/footer.ejs  %> 
+
+<!--Counter js -->
+<script src="<%=baseURL%>public/asset/plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
+<script src="<%=baseURL%>public/asset/plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+
+</body>
+</html>
